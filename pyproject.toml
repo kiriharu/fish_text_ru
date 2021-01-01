@@ -2,7 +2,7 @@
 line-length = 78
 [tool.poetry]
 name = "fish_text_ru"
-version = "2.0.1"
+version = "2.0.2"
 description = "Simple fish-text.ru python wrapper"
 readme = "README.md"
 keywords = ["fish text", "autotext"]
@@ -24,7 +24,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.7"
 requests = "^2.25.1"
 
 
