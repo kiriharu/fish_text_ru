@@ -1,14 +1,19 @@
 from typing import Optional
 from dataclasses import dataclass
+from enum import Enum
 
 
-class TextType:
+class StrEnum(Enum, str):
+    pass
+
+
+class TextType(StrEnum):
     Sentence = "sentence"
     Paragraph = "paragraph"
     Title = "title"
 
 
-class TextFormat:
+class TextFormat(StrEnum):
     json = "json"
     html = "html"
 
