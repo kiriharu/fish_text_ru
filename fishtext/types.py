@@ -3,17 +3,13 @@ from dataclasses import dataclass
 from enum import Enum
 
 
-class StrEnum(Enum, str):
-    pass
-
-
-class TextType(StrEnum):
+class TextType(str, Enum):
     Sentence = "sentence"
     Paragraph = "paragraph"
     Title = "title"
 
 
-class TextFormat(StrEnum):
+class TextFormat(str, Enum):
     json = "json"
     html = "html"
 
