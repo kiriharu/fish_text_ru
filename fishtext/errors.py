@@ -1,14 +1,14 @@
-class TooManyContentExceededError(Exception):
+class TooManyContentExceeded(Exception):
     def __init__(self, message):
         super().__init__(message)
 
 
-class CallLimitExceededError(Exception):
+class CallLimitExceeded(Exception):
     def __init__(self, message):
         super().__init__(message)
 
 
-class BannedForeverError(Exception):
+class BannedForever(Exception):
     def __init__(self, message):
         super().__init__(message)
 

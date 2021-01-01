@@ -3,7 +3,7 @@ from requests.models import Response
 from typing import Optional, Dict
 from fishtext.types import TextType, TextFormat, JsonAPIResponse
 from fishtext.errors import (
-    TextFormatRequired, TooManyContentExceededError, CallLimitExceededError, BannedForeverError,
+    TextFormatRequired, TooManyContentExceeded, CallLimitExceeded, BannedForever,
     InternalServerError
 )
 
@@ -49,10 +49,10 @@ class FishTextJson(FishTextAPI):
     def process_response(self, response: JsonAPIResponse) -> None:
 
         error_codes = {
-            11: TooManyContentExceededError,
-            21: CallLimitExceededError,
-            22: BannedForeverError,
-            31: BannedForeverError
+            11: TooManyContentExceeded,
+            21: CallLimitExceeded,
+            22: BannedForever,
+            31: BannedForever
         }
 
         if response.errorCode is not None:
