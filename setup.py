@@ -9,7 +9,7 @@ def read(filename):
         return file.read()
 
 
-setup(name='pyTelegramBotAPI',
+setup(name='fish_text_ru',
       version=version,
       description='Simple fish-text.ru python wrapper',
       long_description=read('README.md'),
