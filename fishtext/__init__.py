@@ -1,1 +1,1 @@
-from fishtext.api import FishTextJson, FishTextHtml, FishTextAPI
+from .api import FishTextJson, FishTextHtml, FishTextAPI
