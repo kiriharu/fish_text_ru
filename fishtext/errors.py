@@ -16,8 +16,3 @@ class BannedForever(Exception):
 class InternalServerError(Exception):
     def __init__(self, message):
         super().__init__(message)
-
-
-class TextFormatRequired(Exception):
-    def __init__(self):
-        super().__init__("Required text format in FishTextAPI class")

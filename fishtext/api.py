@@ -5,7 +5,6 @@ from requests.models import Response
 
 from fishtext.types import TextType, TextFormat, JsonAPIResponse
 from fishtext.errors import (
-    TextFormatRequired,
     TooManyContentExceeded,
     CallLimitExceeded,
     BannedForever,
