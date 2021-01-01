@@ -19,19 +19,16 @@ FISH_TEXT_API_DOCS = "https://fish-text.ru/api"
 
 class FishTextAPI:
     def __init__(
-        self,
-        session: Optional[Session],
+        self, *,
         api_url: str,
         text_type: TextType,
         text_format: TextFormat,
+        session: Optional[Session] = None,
     ):
         self.session = session or Session()
         self.api_url = api_url
         self.text_type = text_type
-        if text_format:
-            self.text_format = text_format
-        else:
-            raise TextFormatRequired()
+        self.text_format = text_format
 
     def process_response(self, response) -> None:
         raise NotImplementedError
@@ -42,7 +39,7 @@ class FishTextAPI:
 
 class FishTextJson(FishTextAPI):
     def __init__(
-        self,
+        self, *,
         session: Optional[Session] = None,
         api_url: str = FISH_TEXT_API_URL,
         text_type: TextType = TextType.Sentence,
@@ -93,7 +90,7 @@ class FishTextHtml(FishTextAPI):
     )
 
     def __init__(
-        self,
+        self, *,
         session: Optional[Session] = None,
         api_url: str = FISH_TEXT_API_URL,
         text_type: TextType = TextType.Sentence,
