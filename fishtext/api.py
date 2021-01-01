@@ -1,30 +1,34 @@
+from typing import Optional, Dict
+
 from requests.sessions import Session
 from requests.models import Response
-from typing import Optional, Dict
+
 from fishtext.types import TextType, TextFormat, JsonAPIResponse
 from fishtext.errors import (
-    TextFormatRequired, TooManyContentExceeded, CallLimitExceeded, BannedForever,
-    InternalServerError
+    TextFormatRequired,
+    TooManyContentExceeded,
+    CallLimitExceeded,
+    BannedForever,
+    InternalServerError,
 )
+
 
 FISH_TEXT_API_URL = "https://fish-text.ru/get"
 FISH_TEXT_API_DOCS = "https://fish-text.ru/api"
 
 
 class FishTextAPI:
-
-    def __init__(self, session: Optional[Session], api_url: str, text_type: TextType, text_format: TextFormat):
-        if session:
-            self.session = session
-        else:
-            self.session = Session()
-
+    def __init__(
+        self, *,
+        api_url: str,
+        text_type: TextType,
+        text_format: TextFormat,
+        session: Optional[Session] = None,
+    ):
+        self.session = session or Session()
         self.api_url = api_url
         self.text_type = text_type
-        if text_format:
-            self.text_format = text_format
-        else:
-            raise TextFormatRequired()
+        self.text_format = text_format
 
     def process_response(self, response) -> None:
         raise NotImplementedError
@@ -34,16 +38,17 @@ class FishTextAPI:
 
 
 class FishTextJson(FishTextAPI):
-
-    def __init__(self, session: Optional[Session] = None,
-                 api_url: str = FISH_TEXT_API_URL,
-                 text_type: TextType = TextType.Sentence
-                 ):
+    def __init__(
+        self, *,
+        session: Optional[Session] = None,
+        api_url: str = FISH_TEXT_API_URL,
+        text_type: TextType = TextType.Sentence,
+    ):
         super().__init__(
             session=session,
             api_url=api_url,
             text_type=text_type,
-            text_format=TextFormat.json
+            text_format=TextFormat.json,
         )
 
     def process_response(self, response: JsonAPIResponse) -> None:
@@ -55,7 +60,7 @@ class FishTextJson(FishTextAPI):
             11: TooManyContentExceeded,
             21: CallLimitExceeded,
             22: BannedForever,
-            31: InternalServerError
+            31: InternalServerError,
         }
 
         exception = error_codes.get(response.errorCode, None)
@@ -64,14 +69,15 @@ class FishTextJson(FishTextAPI):
 
     def get(self, number: int = 100) -> JsonAPIResponse:
         json_response = self.session.get(
-            FISH_TEXT_API_URL, params=dict(
+            FISH_TEXT_API_URL,
+            params=dict(
                 format=self.text_format, number=number, type=self.text_type
-            )
+            ),
         ).json()
         json_api_response_object = JsonAPIResponse(
             status=json_response.get("status"),
             text=json_response.get("text"),
-            errorCode=json_response.get("errorCode", None)
+            errorCode=json_response.get("errorCode", None),
         )
         self.process_response(json_api_response_object)
         return json_api_response_object
@@ -79,17 +85,21 @@ class FishTextJson(FishTextAPI):
 
 class FishTextHtml(FishTextAPI):
 
-    TOO_MUCH_CONTENT_EXCEEDED = "You requested too much content. Be more moderate."
+    TOO_MUCH_CONTENT_EXCEEDED = (
+        "You requested too much content. Be more moderate."
+    )
 
-    def __init__(self, session: Optional[Session] = None,
-                 api_url: str = FISH_TEXT_API_URL,
-                 text_type: TextType = TextType.Sentence
-                 ):
+    def __init__(
+        self, *,
+        session: Optional[Session] = None,
+        api_url: str = FISH_TEXT_API_URL,
+        text_type: TextType = TextType.Sentence,
+    ):
         super().__init__(
             session=session,
             api_url=api_url,
             text_type=text_type,
-            text_format=TextFormat.html
+            text_format=TextFormat.html,
         )
 
     def process_response(self, response: Response) -> None:
@@ -103,9 +113,10 @@ class FishTextHtml(FishTextAPI):
 
     def get(self, number: int = 100) -> str:
         response = self.session.get(
-            FISH_TEXT_API_URL, params=dict(
+            FISH_TEXT_API_URL,
+            params=dict(
                 format=self.text_format, number=number, type=self.text_type
-            )
+            ),
         )
         self.process_response(response)
         return response.text
