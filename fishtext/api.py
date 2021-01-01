@@ -52,7 +52,7 @@ class FishTextJson(FishTextAPI):
             11: TooManyContentExceeded,
             21: CallLimitExceeded,
             22: BannedForever,
-            31: BannedForever
+            31: InternalServerError
         }
 
         if response.errorCode is not None:
@@ -73,3 +73,17 @@ class FishTextJson(FishTextAPI):
         )
         self.process_response(json_api_response_object)
         return json_api_response_object
+
+
+class FishTextHtml(FishTextAPI):
+
+    def __init__(self, session: Optional[Session] = None,
+                 api_url: str = FISH_TEXT_API_URL,
+                 text_type: TextType = TextType.Sentence
+                 ):
+        super().__init__(
+            session=session,
+            api_url=api_url,
+            text_type=text_type,
+            text_format=TextFormat.html
+        )
