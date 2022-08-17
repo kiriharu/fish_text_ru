@@ -39,11 +39,6 @@ class AsyncFishTextAPI:
     def get(self, number: int = 100):
         raise NotImplementedError
 
-    async def close_client(self) -> None:
-        '''Closing AsyncClient session.
-        '''
-        await self.client.aclose()
-
 
 class AsyncFishTextJson(AsyncFishTextAPI):
     def __init__(
@@ -91,9 +86,6 @@ class AsyncFishTextJson(AsyncFishTextAPI):
         self.process_response(json_api_response_object)
         return json_api_response_object
 
-    async def close_client(self) -> None:
-        return await super().close_client()
-
 
 class AsyncFishTextHtml(AsyncFishTextAPI):
 
@@ -133,6 +125,3 @@ class AsyncFishTextHtml(AsyncFishTextAPI):
         ))
         self.process_response(response)
         return response.text
-
-    async def close_client(self) -> None:
-        return await super().close_client()
