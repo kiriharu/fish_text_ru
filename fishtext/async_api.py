@@ -5,7 +5,10 @@
 #
 from typing import Optional
 
-from httpx import AsyncClient, Response
+try:
+    from httpx import AsyncClient, Response
+except ImportError:
+    raise ImportError('Before use async API, please install httpx package.')
 
 from fishtext.types import TextType, TextFormat, JsonAPIResponse
 from fishtext.errors import (
